@@ -11,6 +11,9 @@ const ProfileScreen: React.FC = () => {
     const [routeName, setRouteName] = useState<string>("19 de abril");
     const [stopName, setStopName] = useState<string>("Parada ...")
     const [waitingTime, setWaitingTime] = useState<number | null>(null);
+    const [morningDays, setMorningDays] = useState<boolean[]>([false, false, false, false, false]);
+    const [afternoonDays, setAfternoonDays] = useState<boolean[]>([false, false, false, false, false]);
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -75,6 +78,7 @@ const ProfileScreen: React.FC = () => {
                 setStopName('Parada no seleccionada')
             }
 
+            // obtener tiempo
             const { data: timeData, error: timeError } = await supabase
                 .from('profiles')
                 .select('waiting_time')
@@ -91,6 +95,40 @@ const ProfileScreen: React.FC = () => {
                     setWaitingTime(5); 
                 }
             }
+
+            // Obtener días (morning) seleccionados
+            const { data: daysData, error: daysError } = await supabase
+                .from('profile_days')
+                .select('days_id')
+                .eq('profile_id', userId);
+
+            if (daysError) {
+                console.error('Error al obtener los días seleccionados: ', daysError.message);
+            } else {
+                console.log(daysData)
+                const selectedDays = daysData.map(day => day.days_id);
+                const daysArray = [1, 2, 3, 4, 5]; // Índices para LUN, MAR, MIE, JUE, VIE
+                const morningDaysBool = daysArray.map(day => selectedDays.includes(day));
+                setMorningDays(morningDaysBool);
+                setAfternoonDays(morningDaysBool); // Si es lo mismo para mañana y tarde
+            }
+
+            // Obtener días (morning) seleccionados
+            /*
+            const { data: daysAfternoon, error: afternoonError } = await supabase
+                .from('profile_afternoon')
+                .select('days_id')
+                .eq('profile_id', userId);
+
+            if (afternoonError) {
+                console.error('Error al obtener los días seleccionados: ', afternoonError.message);
+            } else {
+                console.log(daysAfternoon)
+                const selectedDays = daysAfternoon.map(day => day.days_id);
+                const daysArray = [1, 2, 3, 4, 5]; // Índices para LUN, MAR, MIE, JUE, VIE
+                const morningDaysBool = daysArray.map(day => selectedDays.includes(day));
+                setAfternoonDays(morningDaysBool); // Si es lo mismo para mañana y tarde
+            }*/
 
         };
 
@@ -130,13 +168,13 @@ const ProfileScreen: React.FC = () => {
             <UserDisplayWeek
                 displayName="Días de uso en la mañana"
                 displayText={["LUN", "MAR", "MIE", "JUE", "VIE"]}
-                dayBool={[true, true, true, true, true]}
+                dayBool={morningDays} // dias que selecciono 
                 editInfo={editWeekInfo}
             />
             <UserDisplayWeek
                 displayName="Días de uso en la tarde"
                 displayText={["LUN", "MAR", "MIE", "JUE", "VIE"]}
-                dayBool={[true, true, true, true, true]}
+                dayBool={afternoonDays} // dias en la tarde
                 editInfo={editWeekInfo}
             />
         </View>

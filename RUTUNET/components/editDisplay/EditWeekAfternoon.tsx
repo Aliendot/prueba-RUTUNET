@@ -9,13 +9,13 @@ type Days = {
     disabled: boolean; 
 }
 
-const DaysSelectionScreen: React.FC = () => {
+const AfternSelectionScreen: React.FC = () => {
     const [days, setDays] = useState<Days[]>([])
     const [selected, setSelected] = useState<string[]>([]);
 
     const fetchDays = async () =>{
         const {data, error} = await supabase
-            .from('week_days')
+            .from('week_afternoon')
             .select('id,day')
         
         console.log('data: '+data)
@@ -40,10 +40,11 @@ const DaysSelectionScreen: React.FC = () => {
 
     const saveDaysSelection = async () => {
         if (selected.length > 0) {
-            const userId = "e9ddd8e0-fab5-461e-8100-0dd67b21fe8b"; // id user
+            const userId = "e9ddd8e0-fab5-461e-8100-0dd67b21fe8b"; // Cambia esto según tu contexto
             
+            // Primero, elimina los días previamente seleccionados para este perfil
             const { error: deleteError } = await supabase
-                .from('profile_days')
+                .from('profile_afternoon')
                 .delete()
                 .eq('profile_id', userId);
             
@@ -60,7 +61,7 @@ const DaysSelectionScreen: React.FC = () => {
             }));
 
             const { error: insertError } = await supabase
-                .from('profile_days')
+                .from('profile_afternoon')
                 .insert(insertData);
 
             if (insertError) {
@@ -99,4 +100,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default DaysSelectionScreen;
+export default AfternSelectionScreen;
