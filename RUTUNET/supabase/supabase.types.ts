@@ -48,6 +48,7 @@ export type Database = {
           bus_name: string
           end_time: string | null
           id: number
+          is_transmiting: boolean | null
           start_time: string | null
         }
         Insert: {
@@ -56,6 +57,7 @@ export type Database = {
           bus_name: string
           end_time?: string | null
           id?: number
+          is_transmiting?: boolean | null
           start_time?: string | null
         }
         Update: {
@@ -64,6 +66,7 @@ export type Database = {
           bus_name?: string
           end_time?: string | null
           id?: number
+          is_transmiting?: boolean | null
           start_time?: string | null
         }
         Relationships: []
@@ -71,20 +74,35 @@ export type Database = {
       profile_bus: {
         Row: {
           id: number
-          id_bus: number
+          id_bus: number | null
           id_profile: string | null
         }
         Insert: {
           id?: number
-          id_bus?: number
+          id_bus?: number | null
           id_profile?: string | null
         }
         Update: {
           id?: number
-          id_bus?: number
+          id_bus?: number | null
           id_profile?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profile_bus_id_bus_fkey"
+            columns: ["id_bus"]
+            isOneToOne: false
+            referencedRelation: "buses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "profile_bus_id_profile_fkey"
+            columns: ["id_profile"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profile_days: {
         Row: {
@@ -116,6 +134,7 @@ export type Database = {
           id: string
           rol: string | null
           sector: string
+          waiting_time: number | null
         }
         Insert: {
           bus_stop_id?: number | null
@@ -123,6 +142,7 @@ export type Database = {
           id: string
           rol?: string | null
           sector: string
+          waiting_time?: number | null
         }
         Update: {
           bus_stop_id?: number | null
@@ -130,6 +150,7 @@ export type Database = {
           id?: string
           rol?: string | null
           sector?: string
+          waiting_time?: number | null
         }
         Relationships: [
           {
@@ -167,14 +188,17 @@ export type Database = {
       }
       week_days: {
         Row: {
+          bus_user: number | null
           day: string
           id: number
         }
         Insert: {
+          bus_user?: number | null
           day: string
           id?: number
         }
         Update: {
+          bus_user?: number | null
           day?: string
           id?: number
         }
