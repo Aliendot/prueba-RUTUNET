@@ -65,7 +65,7 @@ const StopSelectionScreen: React.FC = () => {
             <SelectList
                 setSelected={(val: string) => setSelected(val)}
                 data={busStops}
-                defaultOption={{ key: '', value: 'Seleccione una ruta' }} 
+                defaultOption={{ key: '', value: 'Seleccione una parada' }} 
             />
              <Button title="Guardar" onPress={saveSopSelection} />
         </View>
