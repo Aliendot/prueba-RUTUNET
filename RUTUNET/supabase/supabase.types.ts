@@ -71,6 +71,36 @@ export type Database = {
         }
         Relationships: []
       }
+      profile_afternoon: {
+        Row: {
+          days_id: number
+          profile_id: string
+        }
+        Insert: {
+          days_id?: number
+          profile_id: string
+        }
+        Update: {
+          days_id?: number
+          profile_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profile_afternoon_days_id_fkey"
+            columns: ["days_id"]
+            isOneToOne: false
+            referencedRelation: "week_afternoon"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "profile_afternoon_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profile_bus: {
         Row: {
           id: number
@@ -186,19 +216,34 @@ export type Database = {
         }
         Relationships: []
       }
-      week_days: {
+      week_afternoon: {
         Row: {
-          bus_user: number | null
           day: string
           id: number
         }
         Insert: {
-          bus_user?: number | null
           day: string
           id?: number
         }
         Update: {
-          bus_user?: number | null
+          day?: string
+          id?: number
+        }
+        Relationships: []
+      }
+      week_days: {
+        Row: {
+          bus_users: number | null
+          day: string
+          id: number
+        }
+        Insert: {
+          bus_users?: number | null
+          day: string
+          id?: number
+        }
+        Update: {
+          bus_users?: number | null
           day?: string
           id?: number
         }

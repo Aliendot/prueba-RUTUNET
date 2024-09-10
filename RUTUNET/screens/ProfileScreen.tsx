@@ -113,8 +113,7 @@ const ProfileScreen: React.FC = () => {
                 setAfternoonDays(morningDaysBool); // Si es lo mismo para mañana y tarde
             }
 
-            // Obtener días (morning) seleccionados
-            /*
+            // Obtener días (afternoon) seleccionados
             const { data: daysAfternoon, error: afternoonError } = await supabase
                 .from('profile_afternoon')
                 .select('days_id')
@@ -127,8 +126,8 @@ const ProfileScreen: React.FC = () => {
                 const selectedDays = daysAfternoon.map(day => day.days_id);
                 const daysArray = [1, 2, 3, 4, 5]; // Índices para LUN, MAR, MIE, JUE, VIE
                 const morningDaysBool = daysArray.map(day => selectedDays.includes(day));
-                setAfternoonDays(morningDaysBool); // Si es lo mismo para mañana y tarde
-            }*/
+                setAfternoonDays(morningDaysBool); // 
+            }
 
         };
 
@@ -140,6 +139,7 @@ const ProfileScreen: React.FC = () => {
     const editStopInfo = () => { navigation.navigate('Stop'); };
     const editTimeInfo = () => { navigation.navigate('TimeSelection'); };
     const editWeekInfo = () => { navigation.navigate('DaySelection'); };
+    const editWeekAfternoonInfo = () => { navigation.navigate('AfternoonSelection'); };
 
     return (
         <View style={styles.container}>
@@ -175,7 +175,7 @@ const ProfileScreen: React.FC = () => {
                 displayName="Días de uso en la tarde"
                 displayText={["LUN", "MAR", "MIE", "JUE", "VIE"]}
                 dayBool={afternoonDays} // dias en la tarde
-                editInfo={editWeekInfo}
+                editInfo={editWeekAfternoonInfo}
             />
         </View>
     );
